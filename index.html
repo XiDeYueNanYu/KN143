@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>越南语听力练习</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 0;
+            padding-bottom: 300px;
+            background-color: #f7fbf3;
+        }
+        #gameContainer {
+            display: block;
+            min-height: calc(100vh - 150px);
+        }
+        #infoBox {
+            width: 95%;
+            max-width: 700px;
+            min-height: 100px;
+            margin: 0 auto;
+            border: 2px solid #91b66f;
+            background: #85ae5f;
+            color: #ffffff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: clamp(40px, 5vw, 60px);
+            font-weight: bold;
+        }
+        #contactBox {
+            width: 90%;
+            max-width: 700px;
+            min-height: 25px;
+            margin: 0px auto;
+            border: 2px solid #91b66f;
+            background: #85ae5f;
+            color: #f1c232;
+            display: flex;
+            align-items: center;
+            justify-content: left;
+            padding-left: 20px;
+            font-size: clamp(16px, 2vw, 20px);
+            font-weight: bold;
+        }
+        #instructionBox {
+            width: 90%;
+            max-width: 700px;
+            min-height: 25px;
+            margin: 0px auto;
+            border: 2px solid #91b66f;
+            background: #85ae5f;
+            color: #f7e19c;
+            display: flex;
+            align-items: center;
+            justify-content: left;
+            padding-left: 20px;
+            font-size: clamp(16px, 2vw, 20px);
+            font-weight: bold;
+        }
+        #controls {
+            position: fixed;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 95%;
+            max-width: 800px;
+            background: #f7fbf3;
+            border: 3px solid #f7fbf3;
+            padding: 10px 0;
+            z-index: 1000;
+        }
+        #controls div {
+            margin: 5px 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        button {
+            padding: 8px 8px;
+            margin: 0 5px;
+            cursor: pointer;
+            border: 2px solid #85ae5f;
+            background: #85ae5f;
+            box-shadow: 0 5px 5px rgba(0, 0, 0, 0.2);
+            color: #fffbef;
+            font-size: 28px;
+            border-radius: 5px;
+        }
+        #sentenceNumber {
+            width: 50px;
+            padding: 10px;
+            text-align: center;
+            border: 3px solid #85ae5f;
+            background: #f1cc76;
+            color: #000;
+            border-radius: 10px;
+            font-size: 16px;
+            -moz-appearance: textfield;
+        }
+        #sentenceNumber::-webkit-inner-spin-button,
+        #sentenceNumber::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+        #sentenceNumber:disabled {
+            background: #eee;
+        }
+        .disabled {
+            cursor: not-allowed;
+            pointer-events: none;
+        }
+        .active-mode {
+            border: 2px solid #fed16a;
+        }
+        #indicator {
+            width: 95%;
+            max-width: 700px;
+            min-height: 50px;
+            margin: 10px auto;
+            padding: 5px;
+            border: 3px solid #fed16a;
+            background: #ffffe0;
+            border-radius: 10px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            white-space: pre-line;
+            font-size: clamp(20px, 2.5vw, 24px);
+            text-align: left;
+            padding-left: 20px;
+        }
+        #optionsContainer {
+            width: 100%;
+            max-width: 700px;
+            margin: 10px auto;
+        }
+        #results {
+            display: none;
+            width: 95%;
+            max-width: 700px;
+            margin: 10px auto;
+            padding: 10px;
+            border: 2px solid #734A2E;
+            background: #fffbef;
+            color: #000;
+            font-size: 30px;
+            text-align: left;
+            border-radius: 5px;
+            white-space: pre-line;
+        }
+        
+        #recordControls {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            body {
+                padding-bottom: 200px;
+            }
+            #controls {
+                padding: 5px 0;
+            }
+            button {
+                padding: 6px 6px;
+                font-size: 20px;
+            }
+            #sentenceNumber {
+                width: 40px;
+                padding: 8px;
+                font-size: 14px;
+            }
+            #infoBox {
+                font-size: clamp(30px, 4vw, 40px);
+            }
+            #contactBox, #instructionBox {
+                font-size: clamp(14px, 2vw, 16px);
+            }
+            #indicator {
+                min-height: 40px;
+            }
+            #results {
+                font-size: 24px;
+                width: 95%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="gameContainer">
+        <div id="infoBox">习得越南语<br>听力练习</div>
+        <div id="contactBox">讲师-阮玉煌 | Weixin：XiDeYueNanYu</div>
+        <div id="instructionBox">听问题并录音回答</div>
+        <div id="indicator"></div>
+        <div id="optionsContainer"></div>
+        <div id="results"></div>
+    </div>
+    <div id="controls">
+        <div id="freeModeControls">
+            <button id="freeModeBtn" class="active-mode">自由模式</button>
+            <button id="testModeBtn">作业模式</button>
+            <button id="showHideBtn">显示-隐藏</button>
+        </div>
+        <div id="testModeControls">
+            <button id="recordBtn">录音</button>
+            <button id="checkRecordBtn">检查录音</button>
+            <button id="continueBtn">继续</button>
+        </div>
+        <div id="navControls">
+            <button id="prevBtn">◀</button>
+            <input type="text" id="sentenceNumber" inputmode="numeric" pattern="[0-9]*">
+            <button id="nextBtn">▶</button>
+            <button id="replayBtn">再听一遍</button>
+        </div>
+    </div>
+    <audio id="mainAudio"></audio>
+    <audio id="signalAudio" src="YeuCau.mp3"></audio>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+
+    <script>
+        const audio = document.getElementById('mainAudio');
+        const signalAudio = document.getElementById('signalAudio');
+        const indicator = document.getElementById('indicator');
+        const sentenceNumber = document.getElementById('sentenceNumber');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const replayBtn = document.getElementById('replayBtn');
+        const freeModeBtn = document.getElementById('freeModeBtn');
+        const testModeBtn = document.getElementById('testModeBtn');
+        const showHideBtn = document.getElementById('showHideBtn');
+        const resultsDisplay = document.getElementById('results');
+        
+        const freeModeControls = document.getElementById('freeModeControls');
+        const testModeControls = document.getElementById('testModeControls');
+        const navControls = document.getElementById('navControls');
+
+        const recordBtn = document.getElementById('recordBtn');
+        const checkRecordBtn = document.getElementById('checkRecordBtn');
+        const continueBtn = document.getElementById('continueBtn');
+        
+        let currentIndex = 0;
+        let isFreeMode = true;
+        let showQuestion = false;
+        let mediaRecorder;
+        let audioChunks = [];
+        let recordedAudioBlob = null;
+        let recordedAnswers = [];
+        let questionAudioBlobs = [];
+        let isRecording = false;
+
+        const sentences = [
+            { "audioFile": "audio.mp3", "start": 0.302292, "end": 1.142292, "Question": "Bạn tên là gì?" },
+            { "audioFile": "audio.mp3", "start": 1.652292, "end": 2.592292, "Question": "Bạn sống ở đâu?" },
+            { "audioFile": "audio.mp3", "start": 3.072292, "end": 3.812292, "Question": "Bạn học tiếng Việt bao lâu rồi?" },
+        ];
+
+        function disableButtons(disable = true) {
+            const btns = [prevBtn, nextBtn, replayBtn, freeModeBtn, testModeBtn, showHideBtn, recordBtn, checkRecordBtn, continueBtn];
+            btns.forEach(btn => {
+                btn.disabled = disable;
+                if (disable) {
+                    btn.classList.add('disabled');
+                } else {
+                    btn.classList.remove('disabled');
+                }
+            });
+            sentenceNumber.disabled = disable;
+        }
+
+        function updateSentenceDisplay() {
+            sentenceNumber.value = currentIndex + 1;
+            indicator.style.background = '#ffffe0';
+            let questionText = sentences[currentIndex].Question;
+
+            if (isFreeMode) {
+                indicator.innerHTML = showQuestion ? `<div style="font-weight: bold; color: #85ae5f; text-align: center;">${questionText}</div>` : '';
+            } else {
+                indicator.innerHTML = '';
+            }
+        }
+        
+        function updateUIForMode() {
+            if (isFreeMode) {
+                freeModeControls.style.display = 'flex';
+                testModeControls.style.display = 'none';
+                navControls.style.display = 'flex';
+                showHideBtn.style.display = 'inline-block';
+                document.getElementById('instructionBox').textContent = '听问题并录音回答';
+            } else {
+                freeModeControls.style.display = 'flex';
+                testModeControls.style.display = 'flex';
+                navControls.style.display = 'flex';
+                showHideBtn.style.display = 'none';
+                document.getElementById('instructionBox').textContent = '作业模式';
+            }
+            navControls.style.display = 'flex';
+            checkRecordBtn.style.display = 'inline-block';
+            continueBtn.style.display = 'inline-block';
+            recordBtn.style.display = 'inline-block';
+        }
+
+        function playCurrentSentence(callback) {
+            disableButtons(true);
+            const currentSentence = sentences[currentIndex];
+            audio.src = currentSentence.audioFile;
+            audio.currentTime = currentSentence.start;
+
+            const onTimeUpdate = () => {
+                if (audio.currentTime >= currentSentence.end) {
+                    audio.pause();
+                    audio.ontimeupdate = null;
+                    disableButtons(false);
+                    if (callback) callback();
+                }
+            };
+            audio.ontimeupdate = onTimeUpdate;
+            
+            audio.play().catch(error => {
+                console.error('Audio playback failed:', error);
+                alert('Vui lòng nhấn nút “再听一遍” để phát âm thanh.');
+                disableButtons(false);
+            });
+        }
+        
+        function playQuestionAndSignal() {
+            disableButtons(true);
+            playCurrentSentence(() => {
+                signalAudio.play().catch(error => {
+                    console.error('Signal audio playback failed:', error);
+                    disableButtons(false);
+                });
+            });
+        }
+        
+        signalAudio.onended = () => {
+            disableButtons(false);
+        };
+        
+        function startRecording(callback) {
+            if (isRecording) {
+                alert('Đang ghi âm!');
+                return;
+            }
+            disableButtons(true);
+            recordBtn.disabled = false;
+            recordBtn.classList.remove('disabled');
+
+            navigator.mediaDevices.getUserMedia({ audio: true })
+                .then(stream => {
+                    mediaRecorder = new MediaRecorder(stream);
+                    mediaRecorder.ondataavailable = event => {
+                        audioChunks.push(event.data);
+                    };
+                    
+                    mediaRecorder.onstop = () => {
+                        recordedAudioBlob = new Blob(audioChunks, { 'type' : 'audio/webm; codecs=opus' });
+                        recordedAnswers[currentIndex] = recordedAudioBlob;
+                        audioChunks = [];
+                        recordBtn.textContent = '录音';
+                        recordBtn.style.background = '#85ae5f';
+                        isRecording = false;
+                        disableButtons(false);
+                        if (callback) callback();
+                    };
+
+                    mediaRecorder.start();
+                    isRecording = true;
+                    recordBtn.textContent = '停止录音';
+                    recordBtn.style.background = '#CE6D5E';
+                })
+                .catch(error => {
+                    console.error('Lỗi khi truy cập micro:', error);
+                    alert('Không thể truy cập microphone. Vui lòng cho phép truy cập.');
+                    disableButtons(false);
+                });
+        }
+        
+        function stopRecording() {
+            if (isRecording) {
+                mediaRecorder.stop();
+                mediaRecorder.stream.getTracks().forEach(track => track.stop());
+                isRecording = false;
+                recordBtn.textContent = '录音';
+                recordBtn.style.background = '#85ae5f';
+            }
+        }
+        
+        function playRecordedAudio(blob) {
+            if (blob) {
+                disableButtons(true);
+                const audioUrl = URL.createObjectURL(blob);
+                const playbackAudio = new Audio(audioUrl);
+                playbackAudio.play();
+                playbackAudio.onended = () => {
+                    URL.revokeObjectURL(audioUrl);
+                    disableButtons(false);
+                }
+            } else {
+                alert('Chưa có bản ghi âm.');
+            }
+        }
+        
+        function checkAndPlayRecording() {
+            if (isRecording) {
+                stopRecording();
+                playRecordedAudio(recordedAnswers[currentIndex]);
+            } else {
+                playRecordedAudio(recordedAnswers[currentIndex]);
+            }
+        }
+        
+        async function saveRecordings() {
+            const zip = new JSZip();
+            
+            for (let i = 0; i < sentences.length; i++) {
+                const folder = zip.folder(`Q${i + 1}`);
+                
+                await new Promise((resolve) => {
+                    const currentSentence = sentences[i];
+                    const xhr = new XMLHttpRequest();
+                    xhr.open('GET', currentSentence.audioFile, true);
+                    xhr.responseType = 'blob';
+                    xhr.onload = function() {
+                        if (this.status === 200) {
+                            const audioBlob = this.response;
+                            const trimmedBlob = audioBlob.slice(currentSentence.start * 1000, currentSentence.end * 1000);
+                            folder.file('Question.mp3', trimmedBlob);
+                            resolve();
+                        }
+                    };
+                    xhr.send();
+                });
+
+                if (recordedAnswers[i]) {
+                    folder.file('Answer.webm', recordedAnswers[i]);
+                }
+            }
+
+            zip.generateAsync({ type: "blob" })
+                .then(function(content) {
+                    saveAs(content, "越南语听力练习_录音.zip");
+                });
+        }
+        
+        function resetTestMode() {
+            currentIndex = 0;
+            recordedAnswers = [];
+            questionAudioBlobs = [];
+            updateSentenceDisplay();
+            resultsDisplay.style.display = 'none';
+            playQuestionAndSignal();
+        }
+
+        prevBtn.onclick = () => {
+            if (isRecording) stopRecording();
+            currentIndex = (currentIndex - 1 + sentences.length) % sentences.length;
+            updateSentenceDisplay();
+            if (isFreeMode) playCurrentSentence();
+        };
+
+        nextBtn.onclick = () => {
+            if (isRecording) stopRecording();
+            currentIndex = (currentIndex + 1) % sentences.length;
+            updateSentenceDisplay();
+            if (isFreeMode) playCurrentSentence();
+        };
+
+        replayBtn.onclick = () => {
+            if (isRecording) stopRecording();
+            if (isFreeMode) {
+                playCurrentSentence();
+            } else {
+                playQuestionAndSignal();
+            }
+        };
+
+        freeModeBtn.onclick = () => {
+            isFreeMode = true;
+            freeModeBtn.classList.add('active-mode');
+            testModeBtn.classList.remove('active-mode');
+            updateUIForMode();
+            updateSentenceDisplay();
+            if (isRecording) stopRecording();
+        };
+
+        testModeBtn.onclick = () => {
+            if (!isFreeMode) return;
+            isFreeMode = false;
+            testModeBtn.classList.add('active-mode');
+            freeModeBtn.classList.remove('active-mode');
+            updateUIForMode();
+            resetTestMode();
+        };
+
+        showHideBtn.onclick = () => {
+            showQuestion = !showQuestion;
+            showHideBtn.classList.toggle('active-mode', showQuestion);
+            updateSentenceDisplay();
+        };
+        
+        recordBtn.onclick = () => {
+            if (isRecording) {
+                stopRecording();
+            } else {
+                startRecording();
+            }
+        };
+
+        checkRecordBtn.onclick = () => {
+            checkAndPlayRecording();
+        };
+        
+        continueBtn.onclick = async () => {
+            if (isRecording) stopRecording();
+            
+            if (currentIndex === sentences.length - 1) {
+                if (window.confirm("Bạn muốn lưu lại bản ghi âm?")) {
+                    await saveRecordings();
+                }
+                resetTestMode();
+                continueBtn.textContent = '继续';
+            } else {
+                currentIndex = (currentIndex + 1);
+                updateSentenceDisplay();
+                playQuestionAndSignal();
+            }
+        };
+
+        document.addEventListener('DOMContentLoaded', () => {
+            updateUIForMode();
+            updateSentenceDisplay();
+        });
+    </script>
+</body>
+</html>
