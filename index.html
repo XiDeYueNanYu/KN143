@@ -65,7 +65,7 @@
             bottom: 0;
             left: 50%;
             transform: translateX(-50%);
-            width: 95%;
+            width: 100%;
             max-width: 800px;
             background: #f7fbf3;
             border: 3px solid #f7fbf3;
@@ -133,6 +133,23 @@
             text-align: left;
             padding-left: 20px;
         }
+        #guideBox {
+            width: 95%;
+            max-width: 700px;
+            margin: 10px auto;
+            padding: 15px;
+            border: 2px solid #85ae5f;
+            background: #dae6cf;
+            color: #4f6839;
+            border-radius: 10px;
+            text-align: left;
+            font-size: clamp(14px, 1.8vw, 16px);
+            line-height: 1.6;
+        }
+        #guideBox h4 {
+            margin-top: 0;
+            color: #27341c;
+        }
         #optionsContainer {
             width: 100%;
             max-width: 700px;
@@ -184,8 +201,12 @@
                 font-size: clamp(14px, 2vw, 16px);
             }
             #indicator {
+			width: 90%;
                 min-height: 40px;
             }
+			#guideBox {
+            width: 90%;
+			}
             #results {
                 font-size: 24px;
                 width: 95%;
@@ -199,6 +220,18 @@
         <div id="contactBox">讲师-阮玉煌 | Weixin：XiDeYueNanYu</div>
         <div id="instructionBox">听问题并录音回答</div>
         <div id="indicator"></div>
+        <div id="guideBox">
+            <h4>使用说明：</h4>
+            <ul>
+                <li>【自由模式】：浏览口语题目内容。点击〖显示-隐藏〗按钮可查看题目内容。</li>
+                <li>【作业模式】：听题目内容并录制回答。</li>
+                <li>听完题目内容后，请点击〖录音〗按钮开始作答。</li>
+                <li>回答完成后点击〖停止录音〗结束录制。</li>
+                <li>可通过〖检查录音〗按钮回放录制内容，若不满意可再次点击〖录音〗重新录制。</li>
+                <li>点击〖继续〗按钮进入下一题。</li>
+                <li>完成最后一道题后，点击〖继续〗将会把所有录音文件打包成.ZIP压缩包，请将该文件发送给老师。</li>
+            </ul>
+        </div>
         <div id="optionsContainer"></div>
         <div id="results"></div>
     </div>
