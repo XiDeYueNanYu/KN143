@@ -228,6 +228,47 @@
                 width: 95%;
             }
         }
+		@media (max-height: 770px) {
+            body {
+                padding-bottom: 200px;
+            }
+            #controls {
+                padding: 5px 0;
+            }
+            button {
+                padding: 5px 5px;
+                font-size: 18px;
+            }
+			rc {
+			    padding: 3px 3px;
+                font-size: 16px;
+				border: 8px solid #ee7446;
+			}
+            #sentenceNumber {
+                width: 40px;
+                padding: 8px;
+                font-size: 14px;
+            }
+            #infoBox {
+                font-size: clamp(30px, 4vw, 40px);
+            }
+            #contactBox, #instructionBox {
+                font-size: clamp(10px, 2vw, 12px);
+            }
+            #indicator {
+			width: 90%;
+            min-height: 40px;
+			font-size: 14px;
+            }
+			#guideBox {
+            width: 90%;
+			font-size: 12px;
+			}
+            #results {
+                font-size: 24px;
+                width: 95%;
+            }
+        }
     </style>
 </head>
 <body>
