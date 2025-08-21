@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>越南语听力练习</title>
+    <title>越南语口语练习</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -129,7 +129,7 @@
             justify-content: center;
             align-items: center;
             white-space: pre-line;
-            font-size: clamp(20px, 2.5vw, 24px);
+            font-size: clamp(16px, 2.5vw, 20px);
             text-align: left;
             padding-left: 20px;
         }
@@ -202,7 +202,7 @@
             }
             #indicator {
 			width: 90%;
-                min-height: 40px;
+            min-height: 40px;
             }
 			#guideBox {
             width: 90%;
@@ -216,7 +216,7 @@
 </head>
 <body>
     <div id="gameContainer">
-        <div id="infoBox">习得越南语<br>听力练习</div>
+        <div id="infoBox">习得越南语<br>口语练习</div>
         <div id="contactBox">讲师-阮玉煌 | Weixin：XiDeYueNanYu</div>
         <div id="instructionBox">听问题并录音回答</div>
         <div id="indicator"></div>
@@ -230,6 +230,7 @@
                 <li>可通过〖检查录音〗按钮回放录制内容，若不满意可再次点击〖录音〗重新录制。</li>
                 <li>点击〖继续〗按钮进入下一题。</li>
                 <li>完成最后一道题后，点击〖继续〗将会把所有录音文件打包成.ZIP压缩包，请将该文件发送给老师。</li>
+				<li> 温馨提示：微信内直接打开链接不支持下载.ZIP压缩文件。请使用其他浏览器打开链接即可正常使用。</li>
             </ul>
         </div>
         <div id="optionsContainer"></div>
@@ -287,11 +288,80 @@
         let recordedAnswers = [];
         let isRecording = false;
 
-        const sentences = [
-            { "audioFile": "audio.mp3", "start": 0.302292, "end": 1.142292, "Question": "Bạn tên là gì?" },
-            { "audioFile": "audio.mp3", "start": 1.652292, "end": 2.592292, "Question": "Bạn sống ở đâu?" },
-            { "audioFile": "audio.mp3", "start": 3.072292, "end": 3.812292, "Question": "Bạn học tiếng Việt bao lâu rồi?" },
-        ];
+const sentences = [
+    {
+        "audioFile": "audio.mp3",
+        "start": 0.110459,
+        "end": 4.064895,
+        "Question": "Bạn tên là gì? Bạn là người nước nào?"
+    },
+    {
+        "audioFile": "audio.mp3",
+        "start": 4.374181,
+        "end": 10.118054,
+        "Question": "Bạn sinh ngày, tháng, năm nào? Năm nay bạn bao nhiêu tuổi ?"
+    },
+    {
+        "audioFile": "audio.mp3",
+        "start": 10.493615,
+        "end": 13.188817,
+        "Question": "Bạn hãy giới thiệu về gia đình mình?"
+    },
+    {
+        "audioFile": "audio.mp3",
+        "start": 13.476011,
+        "end": 17.187437,
+        "Question": "Bạn thấy ấn tượng nhất với điều gì ở Việt Nam?"
+    },
+    {
+        "audioFile": "audio.mp3",
+        "start": 17.562998,
+        "end": 22.312739,
+        "Question": "Từ nơi bạn ở đến đây có xa không? đi mất bao lâu?"
+    },
+    {
+        "audioFile": "audio.mp3",
+        "start": 22.666209,
+        "end": 25.47187,
+        "Question": "Bạn đến đây bằng phương tiện gì?"
+    },
+    {
+        "audioFile": "audio.mp3",
+        "start": 25.869523,
+        "end": 30.243703,
+        "Question": "Mục tiêu thi năng lực tiếng Việt của bạn là đạt được trình độ nào?"
+    },
+    {
+        "audioFile": "audio.mp3",
+        "start": 30.707631,
+        "end": 36.142219,
+        "Question": "Bạn đang làm gì? Bạn có thích ngành học hay công việc hiện tại của mình không?"
+    },
+    {
+        "audioFile": "audio.mp3",
+        "start": 36.341046,
+        "end": 39.168799,
+        "Question": "Buổi tối bạn thường làm gì?"
+    },
+    {
+        "audioFile": "audio.mp3",
+        "start": 39.433901,
+        "end": 44.75803,
+        "Question": "Bạn học tiếng Việt bao lâu rồi? Hãy chia sẻ quá trình học tiếng Việt của bạn?"
+    },
+    {
+        "audioFile": "audio.mp3",
+        "start": 44.978948,
+        "end": 47.475324,
+        "Question": "Hãy nói về một sở thích của bạn?"
+    },
+    {
+        "audioFile": "audio.mp3",
+        "start": 47.740426,
+        "end": 52.909912,
+        "Question": "Hãy giới thiệu cho tôi biết một địa điểm du lịch nổi tiếng ở đất nước bạn?"
+    }
+];
 
         // Hàm chuyển đổi định dạng audio từ WebM sang WAV
         function convertToWav(blob) {
@@ -544,7 +614,7 @@
 
             zip.generateAsync({ type: "blob" })
                 .then(function(content) {
-                    saveAs(content, "越南语听力练习_录音.zip");
+                    saveAs(content, "越南语口语练习1.zip");
                 });
         }
         
