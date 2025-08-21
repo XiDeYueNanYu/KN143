@@ -176,6 +176,18 @@
             align-items: center;
             justify-content: center;
         }
+		/* thiết lập riêng cho nút record*/
+		rc {
+            padding: 5px 5px;
+            margin: 0 5px;
+            cursor: pointer;
+            border: 10px solid #ee7446;
+            background: #85ae5f;
+            box-shadow: 0 5px 5px rgba(0, 0, 0, 0.2);
+            color: #fffbef;
+            font-size: 20px;
+            border-radius: 20px;		
+		}
 
         /* Responsive */
         @media (max-width: 768px) {
@@ -189,6 +201,10 @@
                 padding: 6px 6px;
                 font-size: 20px;
             }
+			rc {
+			    padding: 3px 3px;
+                font-size: 16px;
+			}
             #sentenceNumber {
                 width: 40px;
                 padding: 8px;
@@ -243,7 +259,7 @@
             <button id="showHideBtn">显示-隐藏</button>
         </div>
         <div id="testModeControls">
-            <button id="recordBtn">录音</button>
+            <rc id="recordBtn">录音</rc>
             <button id="checkRecordBtn">检查录音</button>
             <button id="continueBtn">继续</button>
         </div>
@@ -553,7 +569,12 @@ const sentences = [
                     mediaRecorder.start();
                     isRecording = true;
                     recordBtn.textContent = '停止录音';
-                    recordBtn.style.background = '#CE6D5E';
+                    recordBtn.style.background = '#5b5b5b';
+					recordBtn.style.color = '#ffffff';
+					recordBtn.style.border = '10px solid #ee7446';
+					/* recordBtn.style.borderRadius = '20px'; */
+					/* recordBtn.style.fontSize = '20px'; */
+					/* recordBtn.style.padding = '5px'; */
                 })
                 .catch(error => {
                     console.error('Lỗi khi truy cập micro:', error);
